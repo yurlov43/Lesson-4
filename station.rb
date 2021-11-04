@@ -1,10 +1,18 @@
+require_relative 'instance_counter'
+
 class Station
+  include InstanceCounter
   attr_accessor :title
   attr_reader :trains
 
   def initialize(title)
     @title = title
     @trains = []
+    register_instance
+  end
+
+  def self.all
+    ObjectSpace.each_object(self).to_a
   end
 
   def take_train(train)

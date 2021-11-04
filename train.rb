@@ -1,4 +1,9 @@
+require_relative 'manufacturer_company'
+require_relative 'instance_counter'
+
 class Train
+  include ManufacturerCompany
+  include InstanceCounter
   attr_reader :number # public потому что к геттеру обращаются из вне
   attr_reader :route # public потому что к геттеру обращаются из вне
   attr_reader :type # public потому что к геттеру обращаются из вне
@@ -8,6 +13,14 @@ class Train
     @type = type
     @wagons = []
     @speed = 0
+    register_instance
+  end
+
+  def self.find(train_number)
+    trains = ObjectSpace.each_object(self).to_a.select do |train|
+      train.number == train_number
+    end
+    trains.size == 0 ? nil : trains.first
   end
 
   def accelerate(speed_gain = 10)

@@ -1,4 +1,8 @@
+require_relative 'manufacturer_company'
+
 class Wagon
+  include ManufacturerCompany
+
   def initialize(type)
     @type = type
   end

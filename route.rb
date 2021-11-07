@@ -1,6 +1,8 @@
 require_relative 'instance_counter'
+require_relative 'attestation'
 
 class Route
+  include Attester
   include InstanceCounter
   attr_reader :stations
   attr_reader :intermediate_stations
@@ -8,6 +10,7 @@ class Route
   def initialize(start_station, end_station)
     @intermediate_stations = []
     @stations = [start_station, @intermediate_stations, end_station]
+    validate!
     register_instance
   end
 
@@ -24,5 +27,12 @@ class Route
       puts station.title unless station.nil?
     end
     nil
+  end
+
+  protected
+
+  def validate!
+    raise "Start station not set" if stations.first.class != Station
+    raise "End station not set" if stations.last.class != Station
   end
 end

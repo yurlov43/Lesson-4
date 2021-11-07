@@ -22,13 +22,28 @@ class RailRoad
 
   def create_train
     # - Создавать поезда
-    print "Set the number of the new train: "
-    train_number = gets.chomp
-    print "Set the type of the new train (c - cargo, p - passenger): "
-    train_type = gets.chomp
-    self.trains[train_number] = CargoTrain.new(train_number) if train_type == "c"
-    self.trains[train_number] = PassengerTrain.new(train_number) if train_type == "p"
-    puts "A train with a #{train_number} has been created!"
+    attempts_number = 0
+    begin
+      print "Set the number of the new train: "
+      train_number = gets.chomp
+      print "Set the type of the new train (c - cargo, p - passenger): "
+      train_type = gets.chomp
+
+      case train_type
+      when "c"
+        self.trains[train_number] = CargoTrain.new(train_number)
+      when "p"
+        self.trains[train_number] = PassengerTrain.new(train_number)
+      else
+        self.trains[train_number] = Train.new(train_number, train_type)
+      end
+
+      puts "A train with a #{train_number} has been created!"
+    rescue RuntimeError => error
+      attempts_number += 1
+      puts "\u001b[31;1m#{error.message}\nTry again!\u001b[0m"
+      retry if attempts_number < 3
+    end
   end
 
   def create_route

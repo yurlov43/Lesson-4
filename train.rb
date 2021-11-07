@@ -1,18 +1,23 @@
 require_relative 'manufacturer_company'
 require_relative 'instance_counter'
+require_relative 'attestation'
 
 class Train
+  include Attester
   include ManufacturerCompany
   include InstanceCounter
   attr_reader :number # public потому что к геттеру обращаются из вне
   attr_reader :route # public потому что к геттеру обращаются из вне
   attr_reader :type # public потому что к геттеру обращаются из вне
 
+  NUMBER_FORMAT = /^[\d a-z]{3}-?[\d a-z]{2}$/i
+
   def initialize(number, type)
     @number = number
     @type = type
     @wagons = []
     @speed = 0
+    validate!
     register_instance
   end
 
@@ -25,14 +30,14 @@ class Train
 
   def accelerate(speed_gain = 10)
     self.speed + speed_gain <= 70 ?
-      self.speed += speed_gain :
-      self.speed = 70
+    self.speed += speed_gain :
+    self.speed = 70
   end
 
   def braking(speed_decrease = self.speed)
     self.speed > speed_decrease ?
-      self.speed -= speed_decrease :
-      self.speed = 0
+    self.speed -= speed_decrease :
+    self.speed = 0
   end
 
   def attach_wagon(wagon)
@@ -98,5 +103,10 @@ class Train
 
   def next_station
     self.route.stations.flatten[current_index + 1]
+  end
+
+  def validate!
+    raise "Incorrect train number" if number !~ NUMBER_FORMAT
+    raise "Unknown train type" if type != "cargo" && type != "passenger"
   end
 end

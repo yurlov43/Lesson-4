@@ -34,7 +34,7 @@ loop do
   when 2
     loop do
       rail_road.create_train
-      print "Create another train? [y / n]: "
+      print "Create train? [y / n]: "
       break if gets.chomp == "n"
     end
 

@@ -11,37 +11,49 @@ require_relative 'passenger_wagon'
 rail_road = RailRoad.new
 
 loop do
-  puts "1 - Создать станцию\n" +
-       "2 - Создать поезд\n" +
-       "3 - Создать маршрут\n" +
-       "4 - Добавить или удалить станцию в маршрут\n" +
-       "5 - Назначить маршрут поезду\n" +
-       "6 - Добавить вагон к поезду\n" +
-       "7 - Отцепить вагон от поезда\n" +
-       "8 - Перемещать поезд по маршруту вперед и назад\n" +
-       "9 - Просматривать список станций\n" +
-       "10 - Просматривать список поездов на станции\n" +
-       "q - to quit"
+  puts "\n==================================================\n" +
+       "\u001b[34;1m" +
+       " 1 - Создать станцию\n" +
+       " 2 - Создать поезд\n" +
+       " 3 - Создать маршрут\n" +
+       " 4 - Добавить или удалить станцию в маршрут\n" +
+       " 5 - Назначить маршрут поезду\n" +
+       " 6 - Добавить вагон к поезду\n" +
+       " 7 - Отцепить вагон от поезда\n" +
+       " 8 - Перемещать поезд по маршруту вперед и назад\n" +
+       " 9 - Просматривать список станций\n" +
+       " 10 - Просматривать список поездов на станции\n" +
+       " 11 - Посмотреть список вагонов у поезда\n" +
+       " 12 - Заполнить (загрузить) поезд\n" +
+       " q - to quit\n" +
+       "\u001b[0m" +
+       "=================================================="
 
   case gets.chomp.to_i
   when 1
     loop do
       rail_road.create_station
-      print "Create another station? [y / n]: "
+      print "\u001b[33;1m" +
+            "Create another station? [y / n]: " +
+            "\u001b[0m"
       break if gets.chomp == "n"
     end
 
   when 2
     loop do
       rail_road.create_train
-      print "Create train? [y / n]: "
+      print "\u001b[33;1m" +
+            "Create train? [y / n]: " +
+            "\u001b[0m"
       break if gets.chomp == "n"
     end
 
   when 3
     loop do
       rail_road.create_route
-      print "Create another route? [y / n]: "
+      print "\u001b[33;1m" +
+            "Create route? [y / n]: " +
+            "\u001b[0m"
       break if gets.chomp == "n"
     end
   when 4
@@ -58,6 +70,10 @@ loop do
     rail_road.show_stations
   when 10
     rail_road.show_trains_at_station
+  when 11
+    rail_road.show_train_wagons
+  when 12
+    rail_road.load_train
   else
     break
   end

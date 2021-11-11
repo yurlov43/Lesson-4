@@ -4,6 +4,7 @@ require_relative 'attestation'
 class Wagon
   include Attester
   include ManufacturerCompany
+  attr_reader :type
 
   def initialize(type)
     @type = type
@@ -11,8 +12,6 @@ class Wagon
   end
 
   protected
-  # Используется внутри класса или при наследовании
-  attr_accessor :type
 
   def validate!
     raise "Unknown wagon type" if type != "cargo" && type != "passenger"

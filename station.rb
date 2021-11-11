@@ -25,16 +25,23 @@ class Station
   end
 
   def trains_by_type
-    puts "At the station: #{title}"
+    puts "\u001b[32;1m" +
+         "At the station: #{title}" +
+         "\u001b[0m"
+
     freight_trains = trains.select do |train|
       train.type == "cargo"
     end
+    puts "\u001b[32;1m" +
+         "\t#{freight_trains.size} - freight trains." +
+         "\u001b[0m"
 
-    puts "\t#{freight_trains.size} - freight trains."
     passenger_trains = trains.select do |train|
       train.type == "passenger"
    end
-    puts "\t#{passenger_trains.size} - passenger trains"
+    puts "\u001b[32;1m" +
+         "\t#{passenger_trains.size} - passenger trains" +
+         "\u001b[0m"
   end
 
   def send_train(train)
@@ -42,9 +49,12 @@ class Station
   end
 
   def show_trains
-    puts "List of all trains in the station #{self.title}:"
-    self.trains.each do |train|
-      puts "\t#{train.number}"
+    puts "\u001b[32;1m" +
+         "List of all trains in the station #{self.title}:" +
+         "\u001b[0m"
+
+    train_manipulation do |train|
+      train.information
     end
   end
 
@@ -52,5 +62,9 @@ class Station
 
   def validate!
     raise "Incorrect station name" if title !~ TITLE_FORMAT
+  end
+
+  def train_manipulation(&block)
+    trains.each &block
   end
 end

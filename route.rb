@@ -32,7 +32,10 @@ class Route
   protected
 
   def validate!
-    raise "Start station not set" if stations.first.class != Station
-    raise "End station not set" if stations.last.class != Station
+    errors = []
+    errors << "Start station not set" if stations.first.class != Station
+    errors << "End station not set" if stations.last.class != Station
+
+    raise errors.join('\n') unless errors.empty?
   end
 end

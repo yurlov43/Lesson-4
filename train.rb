@@ -12,6 +12,7 @@ class Train
   attr_reader :wagons
 
   NUMBER_FORMAT = /^[\d a-z]{3}-?[\d a-z]{2}$/i
+  @@trains = []
 
   def initialize(number, type)
     @number = number
@@ -20,10 +21,11 @@ class Train
     @speed = 0
     validate!
     register_instance
+    @@trains << self
   end
 
   def self.find(train_number)
-    trains = ObjectSpace.each_object(self).to_a.select do |train|
+    trains = @@trains.select do |train|
       train.number == train_number
     end
     trains.size == 0 ? nil : trains.first

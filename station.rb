@@ -8,16 +8,18 @@ class Station
   attr_reader :trains
 
   TITLE_FORMAT = /^[A-Z]{1}[a-z]{1,15}(-{1}\d{1,3})?$/
+  @@stations = []
 
   def initialize(title)
     @title = title
     @trains = []
     validate!
     register_instance
+    @@stations << self
   end
 
   def self.all
-    ObjectSpace.each_object(self).to_a
+    @@stations
   end
 
   def take_train(train)

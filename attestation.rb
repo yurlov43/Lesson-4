@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Attester
   def included(base)
     base.include :InstanceMethods

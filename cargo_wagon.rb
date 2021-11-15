@@ -1,18 +1,15 @@
-class CargoWagon < Wagon
+# frozen_string_literal: true
 
-  VOLUME_FORMAT = /^[0-9]{1,3}$/
+class CargoWagon < Wagon
+  VOLUME_FORMAT = /^[0-9]{1,3}$/.freeze
 
   def initialize(volume)
     super("cargo", volume)
   end
 
-  def take_volume(cargo_volume)
-    use_place(cargo_volume)
-  end
+  alias take_volume use_place
 
-  def free_volume
-    free_place
-  end
+  alias free_volume free_place
 
   protected
 

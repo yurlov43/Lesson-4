@@ -1,18 +1,15 @@
-class PassengerWagon < Wagon
+# frozen_string_literal: true
 
-  SEATS_NUMBER_FORMAT = /^\d{1,2}$/
+class PassengerWagon < Wagon
+  SEATS_NUMBER_FORMAT = /^\d{1,2}$/.freeze
 
   def initialize(seats_number)
     super("passenger", seats_number)
   end
 
-  def take_place
-    use_place
-  end
+  alias take_place use_place
 
-  def free_seats_number
-    free_place
-  end
+  alias free_seats_number free_place
 
   protected
 

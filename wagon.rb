@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer_company'
 require_relative 'attestation'
 
@@ -6,7 +8,7 @@ class Wagon
   include ManufacturerCompany
   attr_reader :type
 
-  TOTAL_PLACE_FORMAT = /^\d+$/
+  TOTAL_PLACE_FORMAT = /^\d+$/.freeze
 
   def initialize(type, total_place)
     @type = type
@@ -15,7 +17,7 @@ class Wagon
     validate!
   end
 
-  def use_place(value=1)
+  def use_place(value = 1)
     self.used_place += value if value <= free_place
   end
 
@@ -24,18 +26,9 @@ class Wagon
   end
 
   def information
-    print "\tWagon type: " +
-            "\u001b[32;1m" +
-            "#{type} " +
-            "\u001b[37;1m" +
-            "\tNumber of free seats: " +
-            "\u001b[32;1m" +
-            "#{free_place} " +
-            "\u001b[37;1m" +
-            "\tNumber of occupied places: " +
-            "\u001b[32;1m" +
-            "#{used_place}\n" +
-            "\u001b[0m"
+    print "\tWagon type: #{type.to_s.in_green}"
+    print "\tNumber of free seats: #{free_place.to_s.in_green}"
+    puts "\tNumber of occupied places: #{used_place.to_s.in_green}"
   end
 
   protected
@@ -44,7 +37,9 @@ class Wagon
   attr_accessor :used_place
 
   def validate!
-    raise "Unknown wagon type" if type != "cargo" && type != "passenger"
-    raise "Incorrect wagon total place" if total_place.to_s !~ TOTAL_PLACE_FORMAT
+    errors = []
+    errors << "Unknown wagon type" if type != "cargo" && type != "passenger"
+    errors << "Incorrect wagon total place" if total_place.to_s !~ TOTAL_PLACE_FORMAT
+    raise errors.join(". ") unless errors.empty?
   end
 end

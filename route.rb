@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 require_relative 'attestation'
 
 class Route
   include Attester
   include InstanceCounter
-  attr_reader :stations
-  attr_reader :intermediate_stations
+  attr_reader :stations, :intermediate_stations
 
   def initialize(start_station, end_station)
     @intermediate_stations = []
@@ -36,6 +37,6 @@ class Route
     errors << "Start station not set" if stations.first.class != Station
     errors << "End station not set" if stations.last.class != Station
 
-    raise errors.join('\n') unless errors.empty?
+    raise errors.join("\n") unless errors.empty?
   end
 end

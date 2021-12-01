@@ -10,6 +10,7 @@ require_relative 'wagon'
 require_relative 'cargo_wagon'
 require_relative 'passenger_wagon'
 require_relative 'string'
+require 'readline'
 
 rail_road = RailRoad.new
 
@@ -77,7 +78,7 @@ lambdas = { 1 => create_station, 2 => create_train, 3 => create_route,
 
 loop do
   show_menu
-  index = gets.chomp.to_i
+  index = Readline.readline("> ").chomp.to_i
 
   case index
   when 1..13

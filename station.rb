@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'attestation'
+require_relative 'validation'
 
 class Station
-  include Attester
+  include Validation
   include InstanceCounter
   attr_accessor :title
   attr_reader :trains
 
   TITLE_FORMAT = /^[A-Z]{1}[a-z]{1,15}(-{1}\d{1,3})?$/.freeze
   @@stations = []
+
+  validate :title, :format, TITLE_FORMAT
 
   def initialize(title)
     @title = title
@@ -52,10 +54,6 @@ class Station
   end
 
   protected
-
-  def validate!
-    raise "Incorrect station name" if title !~ TITLE_FORMAT
-  end
 
   def train_manipulation(&block)
     trains.each(&block)

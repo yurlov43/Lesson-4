@@ -13,8 +13,8 @@ module StationManagement
       begin
         stations[title] ||= Station.new(title)
         puts "Station #{title} created.".in_green
-      rescue RuntimeError => e
-        puts "#{e.message}. Try again!".in_red
+      rescue RuntimeError => error
+        puts "#{error.message}. Try again!".in_red
       end
       stations[title]
     end

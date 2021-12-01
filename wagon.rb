@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer_company'
-require_relative 'attestation'
+require_relative 'validation'
 
 class Wagon
-  include Attester
+  include Validation
   include ManufacturerCompany
   attr_reader :type
 
   TOTAL_PLACE_FORMAT = /^\d+$/.freeze
+  TYPE_FORMAT = /^cargo|passenger$/.freeze
+
+  validate :total_place, :format, TOTAL_PLACE_FORMAT
+  validate :type, :format, TYPE_FORMAT
 
   def initialize(type, total_place)
     @type = type
@@ -35,11 +39,4 @@ class Wagon
 
   attr_reader :total_place
   attr_accessor :used_place
-
-  def validate!
-    errors = []
-    errors << "Unknown wagon type" if type != "cargo" && type != "passenger"
-    errors << "Incorrect wagon total place" if total_place.to_s !~ TOTAL_PLACE_FORMAT
-    raise errors.join(". ") unless errors.empty?
-  end
 end

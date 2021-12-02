@@ -28,8 +28,12 @@ module TrainManagement
         return
       end
 
-      train.add_route(route)
-      puts "Train #{train.number} has been successfully placed on the route!".in_green
+      begin
+        train.add_route(route)
+        puts "Train #{train.number} has been successfully placed on the route!".in_green
+      rescue RuntimeError => error
+        puts "#{error.message}.".in_red
+      end
     end
 
     def attach_wagon_to_train

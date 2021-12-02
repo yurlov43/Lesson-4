@@ -4,14 +4,16 @@ require_relative 'manufacturer_company'
 require_relative 'instance_counter'
 require_relative 'validation'
 require_relative 'accessors'
+require_relative 'route'
 
 class Train
   include Validation
   include Accessors
   include ManufacturerCompany
   include InstanceCounter
-  attr_reader :number, :route, :type, :wagons
+  attr_reader :number, :type, :wagons
   attr_accessor_with_history :speed
+  strong_attr_accessor :route, Route
 
   NUMBER_FORMAT = /^[\d a-z]{3}-?[\d a-z]{2}$/i.freeze
   TYPE_FORMAT = /^cargo|passenger$/.freeze
@@ -109,8 +111,7 @@ class Train
 
   protected
 
-  attr_accessor :current_index #, :speed
-  attr_writer :route
+  attr_accessor :current_index
 
   def previous_station
     previous_index = current_index - 1

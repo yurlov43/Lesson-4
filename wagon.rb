@@ -2,11 +2,14 @@
 
 require_relative 'manufacturer_company'
 require_relative 'validation'
+require_relative 'accessors'
 
 class Wagon
   include Validation
+  include Accessors
   include ManufacturerCompany
   attr_reader :type
+  attr_accessor_with_history :used_place
 
   TOTAL_PLACE_FORMAT = /^\d+$/.freeze
   TYPE_FORMAT = /^cargo|passenger$/.freeze
@@ -38,5 +41,4 @@ class Wagon
   protected
 
   attr_reader :total_place
-  attr_accessor :used_place
 end

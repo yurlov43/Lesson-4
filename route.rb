@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
-require_relative 'attestation'
+require_relative 'validation'
+require_relative 'station'
 
 class Route
-  include Attester
+  include Validation
   include InstanceCounter
   attr_reader :stations, :intermediate_stations
 
+  validate :start_station, :type, Station
+  validate :end_station, :type, Station
+
   def initialize(start_station, end_station)
     @intermediate_stations = []
+    @start_station = start_station
+    @end_station = end_station
     @stations = [start_station, @intermediate_stations, end_station]
     validate!
     register_instance
@@ -32,11 +38,5 @@ class Route
 
   protected
 
-  def validate!
-    errors = []
-    errors << "Start station not set" if stations.first.class != Station
-    errors << "End station not set" if stations.last.class != Station
-
-    raise errors.join("\n") unless errors.empty?
-  end
+  attr_reader :start_station, :end_station
 end

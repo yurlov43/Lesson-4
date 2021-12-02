@@ -17,8 +17,6 @@ class Train
   validate :number, :format, NUMBER_FORMAT
   validate :type, :format, TYPE_FORMAT
 
-  puts Train.attributes
-
   @@trains = []
 
   def initialize(number, type)

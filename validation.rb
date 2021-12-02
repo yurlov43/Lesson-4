@@ -16,12 +16,11 @@ module Validation
 
     def validate!
       errors_clear
-      self.class.attributes.each do |attribute|
-        validation = self.class.send(
-          attribute[:method_name],
-          self.send(attribute[:attribute_name]),
-          attribute[:parameter])
-        errors << "#{attribute[:attribute_name]}: #{validation}" unless validation.nil?
+      self.class.attributes.each_key do |attribute_name|
+        self.class.attributes[attribute_name].each do |method, parameter|
+          validation = self.class.send(method, self.send(attribute_name), parameter)
+          errors << "#{attribute_name}: #{validation}" unless validation.nil?
+        end
       end
       raise errors.join("\n") unless errors.empty?
     end
@@ -36,17 +35,18 @@ module Validation
   end
 
   module ClassMethods
-    def validate(attribute_name, validation_type, *parameter)
-      attributes << {
-        attribute_name: attribute_name,
-        method_name: validation_type,
-        parameter: parameter.first
-      }
-    end
 
     def attributes
-      @attributes.nil? ? @attributes = [] : @attributes
+      @attributes.nil? ? @attributes = {} : @attributes
     end
+
+    protected
+
+    def validate(attribute_name, validation_type, *parameter)
+      attributes[attribute_name] ||= {}
+      attributes[attribute_name][validation_type] = parameter.first
+    end
+
 
     def presence(attribute_value, parameter)
       if attribute_value.nil? || attribute_value == ''

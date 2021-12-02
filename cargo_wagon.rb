@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+require_relative 'wagon'
 
 class CargoWagon < Wagon
   VOLUME_FORMAT = /^[0-9]{1,3}$/.freeze
+
+  validate :total_place, :format, VOLUME_FORMAT
 
   def initialize(volume)
     super("cargo", volume)
@@ -10,10 +13,4 @@ class CargoWagon < Wagon
   alias take_volume use_place
 
   alias free_volume free_place
-
-  protected
-
-  def validate!
-    raise "Incorrect wagon volume" if total_place.to_s !~ VOLUME_FORMAT
-  end
 end

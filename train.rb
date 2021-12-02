@@ -2,15 +2,23 @@
 
 require_relative 'manufacturer_company'
 require_relative 'instance_counter'
-require_relative 'attestation'
+require_relative 'validation'
 
 class Train
-  include Attester
+  include Validation
   include ManufacturerCompany
   include InstanceCounter
   attr_reader :number, :route, :type, :wagons
 
   NUMBER_FORMAT = /^[\d a-z]{3}-?[\d a-z]{2}$/i.freeze
+  TYPE_FORMAT = /^cargo|passenger$/.freeze
+
+  validate :number, :type, String
+  validate :number, :format, NUMBER_FORMAT
+  validate :type, :format, TYPE_FORMAT
+
+  puts Train.attributes
+
   @@trains = []
 
   def initialize(number, type)
@@ -36,7 +44,7 @@ class Train
   end
 
   def attach_wagon(wagon)
-    wagons << wagon # unless self.wagons.include?(wagon)
+    wagons << wagon
   end
 
   def unhook_wagon
@@ -110,13 +118,6 @@ class Train
 
   def next_station
     route.stations.flatten[current_index + 1]
-  end
-
-  def validate!
-    errors = []
-    errors << "Incorrect train number" if number !~ NUMBER_FORMAT
-    errors << "Unknown train type" if type != "cargo" && type != "passenger"
-    raise errors.join(". ") unless errors.empty?
   end
 
   def wagon_manipulation(&block)

@@ -6,6 +6,7 @@ require_relative 'train_management'
 class RailRoad
   include StationManagement
   include TrainManagement
+
   def initialize
     @trains = {}
     @wagons = []
